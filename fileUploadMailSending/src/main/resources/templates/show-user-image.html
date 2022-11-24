@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="index">
+	layout:decorate="layout">
 <head>
 <meta charset="UTF-8"></meta>
 <title>Home</title>
@@ -10,7 +10,7 @@
 </head>
 <body>
 
-	<div class="row" layout:fragment="content">
+	<div layout:fragment="content">
 		<div class="container">
 			<div class="col-md-8 mx-auto">
 				<h2>Image from the user:</h2>

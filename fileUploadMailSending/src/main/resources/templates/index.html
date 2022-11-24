@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout">
 <head>
 <meta charset="UTF-8"></meta>
 <title>Home</title>
@@ -8,27 +9,11 @@
 <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 </head>
 <body>
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" th:href="@{/}">Navbar</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-				aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					<a class="nav-item nav-link" th:href="@{/}">Home</a>
-					<a class="nav-item nav-link" th:href="@{/users}">Users</a>
-				</div>
-			</div>
-		</nav>
-	</header>
-	<section class="my-5">
 
+	<div layout:fragment="content">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8 mx-auto">		
+				<div class="col-md-8 mx-auto">
 					<br>
 					<h2>Upload User Image</h2>
 					<p th:text="${message}" th:if="${message ne null}"
@@ -37,8 +22,7 @@
 						enctype="multipart/form-data">
 						<div class="form-group">
 
-							<input type="text" name="username" class="form-control-file"
-								autofocus="autofocus" placeholder="username"></input>
+							<input type="text" name="username" class="form-control-file" autofocus="autofocus" placeholder="username"></input>
 							<input type="file" name="image" class="form-control-file"></input>
 						</div>
 						<br>
@@ -66,10 +50,9 @@
 					<br>
 				</div>
 			</div>
-			<br>
-			<div layout:fragment="content"></div>
 		</div>
+	</div>
 
-	</section>
+
 </body>
 </html>
