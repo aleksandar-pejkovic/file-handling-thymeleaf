@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="index">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Home</title>
+<link th:href="@{/css/main.css}" rel="stylesheet" />
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+
+	<div class="row" layout:fragment="content">
+		<div class="container">
+			<div class="col-md-8 mx-auto">
+				<h2>Image from the user:</h2>
+				<h2 th:text="${username}"></h2>
+
+				<img th:src="*{'/api/user/getimage/'+{username}}">
+				<!-- <img alt="ovde treba da bude slika" th:src="*{'data:image/png;base64,'+{image}}"> -->
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>
