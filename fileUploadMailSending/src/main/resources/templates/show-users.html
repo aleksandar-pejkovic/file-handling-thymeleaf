@@ -3,21 +3,23 @@
 	layout:decorate="layout">
 
 <div layout:fragment="content">
-	<table class="table table-dark">
-		<thead>
-			<tr>
-				<th scope="col">Username</th>
-				<th scope="col">Email</th>
-				<th scope="col">Image</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="user: ${users}">
-				<td th:text="${user.username}" />
-				<td th:text="${user.email}" />
-				<td><img alt="ovde treba da bude slika"
-					th:src="*{'/api/user/getimage/'+{user.username}}"></td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="container">
+		<table class="table table-dark">
+			<thead>
+				<tr>
+					<th scope="col">Username</th>
+					<th scope="col">Email</th>
+					<th scope="col">Image</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user: ${users}">
+					<td th:text="${user.username}" />
+					<td th:text="${user.email}" />
+					<td><img alt="ovde treba da bude slika"
+						th:src="*{'/api/user/getimage/'+{user.username}}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
