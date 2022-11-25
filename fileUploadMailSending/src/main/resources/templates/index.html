@@ -6,7 +6,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 mx-auto">
-				<br>
+				<br>		
+				<!--  -->
+				<!--  -->
 				<h2>Upload User Image</h2>
 				<p th:text="${message}" th:if="${message ne null}"
 					class="alert alert-primary"></p>
@@ -29,9 +31,10 @@
 		<br>
 		<div class="row">
 			<div class="col-md-8 mx-auto">
+				<!--  -->
+				<!--  -->
 				<h2>Load User Image</h2>
-
-				<form action="#" th:action="@{/api/user/getimage}" method="get">
+				<form action="#" th:action="@{/user}" method="get">
 					<div class="form-group">
 						<input type="text" name="username" class="form-control-file"
 							autofocus="autofocus" placeholder="username"></input>

@@ -5,9 +5,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.practice.mailweb.feature.user.AppUser;
 import com.practice.mailweb.feature.user.UserService;
 
 @Controller
@@ -29,12 +32,17 @@ public class FileController {
 	@Autowired
 	UserService userService;
 	
-	private byte[] resizeImage(MultipartFile file) {
+	private byte[] resizeImage(MultipartFile file, int height) {
 		try {
 			BufferedImage bi = ImageIO.read(file.getInputStream());
-			BufferedImage resized = resizeImage(bi, 128, 128);
+			String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+			double oldWidth = bi.getWidth();
+			double oldHeight = bi.getHeight();
+			int newHeight = height;
+			int newWidth = (int) (newHeight/oldHeight * oldWidth);
+			BufferedImage resized = resizeImage(bi, newWidth, newHeight);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        ImageIO.write(resized, "png", baos);
+	        ImageIO.write(resized, extension, baos);
 	        return baos.toByteArray();
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
@@ -51,14 +59,22 @@ public class FileController {
 	
 	@PostMapping("/api/user/setimage")
 	public String setUserImage(Model model, @RequestParam("username") String username, @RequestParam("image") MultipartFile file) throws IOException {
-		userService.setUserImage(username, resizeImage(file));
+		userService.setUserImage(username, resizeImage(file, 128));
 		return "index";
 	}
 	
 	@GetMapping("/api/user/getimage")
-	public String getUserImage(Model model, @RequestParam("username") String username){
+	public String getUserImage(Model model, @RequestParam("username") String username){	
 		model.addAttribute("username", username);
 //		model.addAttribute("image", userService.loadUserImageBase64(username));
+		return "show-user-image";
+	}
+	
+	@GetMapping("/api/user/getimagepage/{username}")
+	public String getUserImagePage(Model model, @PathVariable("username") String username){
+		Optional<AppUser> optionalUser = userService.loadUserByUsername(username);
+		AppUser user = optionalUser.orElseThrow();
+		model.addAttribute("user", user);
 		return "show-user-image";
 	}
 	
