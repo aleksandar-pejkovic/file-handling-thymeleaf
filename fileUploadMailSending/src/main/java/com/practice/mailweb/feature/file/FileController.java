@@ -34,7 +34,7 @@ public class FileController {
 	
 	private byte[] resizeImage(MultipartFile file, int height) {
 		try {
-			int maxUploadSizeInMb = 5 * 1024;
+			int maxUploadSizeInMb = 100 * 1024;
 			if(file.getSize() > maxUploadSizeInMb) {
 				throw new RuntimeException();
 			}
