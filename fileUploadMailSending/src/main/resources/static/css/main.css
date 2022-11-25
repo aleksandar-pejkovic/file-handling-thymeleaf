@@ -1,7 +1,17 @@
 @charset "UTF-8";
 
+table {
+    display:table;
+    table-layout:fixed;
+}
+
 .table-cell{
-	width: 33%;
 	text-align: center;
 	vertical-align: middle;
+	background-color: black;
+}
+
+table > form, button {
+	padding: 0px;
+	margin: 0px;
 }
