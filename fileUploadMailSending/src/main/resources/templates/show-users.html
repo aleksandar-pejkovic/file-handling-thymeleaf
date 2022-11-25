@@ -6,26 +6,26 @@
 	<div class="container">
 		<table class="table table-dark">
 			<thead>
-				<tr  class="table-cell">
+				<tr class="table-cell">
 					<th scope="col">Username</th>
 					<th scope="col">Email</th>
 					<th scope="col">Image</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="user: ${users}">
-					<td class="table-cell" th:text="${user.username}" />
-					<td class="table-cell" th:text="${user.email}" />
-					<td class="table-cell">
+				<tr class="table-cell" th:each="user: ${users}">
+					<td th:text="${user.username}" />
+					<td th:text="${user.email}" />
+					<td>
 						<form method="get" th:action="@{'/api/user/getimagepage/'+${user.username}}">
 							<button>
 								<img alt="ovde treba da bude slika" th:src="*{'/api/user/getimage/'+{user.username}}">
 							</button>
 						</form>
-					</td>
-
+					</td>	
 				</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
+</html>
