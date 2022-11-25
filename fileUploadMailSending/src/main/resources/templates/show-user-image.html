@@ -10,6 +10,7 @@
 					<th scope="col">Username</th>
 					<th scope="col">Email</th>
 					<th scope="col">Image</th>
+					<th scope="col">Change images</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -19,8 +20,20 @@
 					<td>						
 						<img alt="ovde treba da bude slika" th:src="*{'/api/user/getimage/'+{user.username}}">						
 					</td>
+					<td>
+						<form action="#" th:action="@{/api/user/setimage}" method="post" enctype="multipart/form-data">
+							<input type="text" name="username" hidden="true" th:value="${user.username}"></input>
+							<input type="file" name="image" class="form-control form-control-sm"></input>
+							<br>
+							<button type="submit" class="btn btn-light">Upload image</button>
+							<br>
+							<span class="warning-msg" th:if="${msg != null}" th:text="${msg}"></span>
+						</form>
+					</td>
 				</tr>
 			</tbody>
 		</table>
+		
 	</div>
 </div>
+</html>

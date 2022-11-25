@@ -15,3 +15,8 @@ table > form, button {
 	padding: 0px;
 	margin: 0px;
 }
+
+.warning-msg{
+	color: red;
+	font-weight: bold;
+}

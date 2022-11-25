@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.practice.mailweb.feature.user.AppUser;
 import com.practice.mailweb.feature.user.UserService;
+import com.practice.mailweb.settings.filesettings.ImageSettings;
 
 @Controller
 public class FileController {
@@ -32,17 +33,13 @@ public class FileController {
 	@Autowired
 	UserService userService;
 	
-	private byte[] resizeImage(MultipartFile file, int height) {
+	private byte[] resizeImage(MultipartFile file) {
 		try {
-			int maxUploadSizeInMb = 100 * 1024;
-			if(file.getSize() > maxUploadSizeInMb) {
-				throw new RuntimeException();
-			}
 			BufferedImage bi = ImageIO.read(file.getInputStream());
 			String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 			double oldWidth = bi.getWidth();
 			double oldHeight = bi.getHeight();
-			int newHeight = height;
+			int newHeight = ImageSettings.getImageHeight();
 			int newWidth = (int) (newHeight/oldHeight * oldWidth);
 			BufferedImage resized = resizeImage(bi, newWidth, newHeight);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -63,8 +60,25 @@ public class FileController {
 	
 	@PostMapping("/api/user/setimage")
 	public String setUserImage(Model model, @RequestParam("username") String username, @RequestParam("image") MultipartFile file) throws IOException {
-		userService.setUserImage(username, resizeImage(file, 128));
-		return "index";
+		
+		Optional<AppUser> optionalUser = userService.loadUserByUsername(username);
+		AppUser user = optionalUser.orElseThrow();
+		model.addAttribute("user", user);
+		
+		if(file.isEmpty()) {
+			model.addAttribute("msg", "You must select image!");
+			return "show-user-image";
+		}
+		
+		int maxUploadSizeInKb = ImageSettings.getMaxLoadSizeInKb();
+		
+		if(file.getSize() > maxUploadSizeInKb) {
+			model.addAttribute("msg", "Max image size is " + maxUploadSizeInKb/1024 + " kb!");
+			return "show-user-image";
+		}
+		
+		userService.setUserImage(username, resizeImage(file));
+		return "show-user-image";
 	}
 	
 	@GetMapping("/api/user/getimage")
