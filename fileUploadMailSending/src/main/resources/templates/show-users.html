@@ -9,7 +9,7 @@
 				<tr class="table-cell">
 					<th scope="col">Username</th>
 					<th scope="col">Email</th>
-					<th scope="col">Image</th>
+					<th scope="col">Image from path</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,7 +22,8 @@
 								<img alt="ovde treba da bude slika" th:src="*{'/api/user/getimage/'+{user.username}}">
 							</button>
 						</form>
-					</td>	
+					</td>
+						
 				</tr>
 			</tbody>
 		</table>

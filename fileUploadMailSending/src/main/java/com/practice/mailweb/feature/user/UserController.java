@@ -41,12 +41,12 @@ public class UserController {
 
 	@GetMapping("/username/{username}")
 	public AppUser getUserByUsername(@PathVariable String username) {
-		return userService.loadUserByUsername(username).orElseThrow();
+		return userService.loadUserByUsername(username);
 	}
 	
 	@GetMapping("/email/{email}")
 	public AppUser getUserByEmail(@PathVariable String email) {
-		return userService.loadUserByEmail(email).orElseThrow();
+		return userService.loadUserByEmail(email);
 	}
 	
 	@GetMapping("/verify")

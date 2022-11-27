@@ -1,7 +1,6 @@
 package com.practice.mailweb.feature.file;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +26,7 @@ public class PageContoller {
 	
 	@GetMapping("/user")
 	String getPerson(Model model, @RequestParam("username") String username) {
-		Optional<AppUser> optionalUser = userService.loadUserByUsername(username);
-		AppUser user = optionalUser.orElseThrow();
+		AppUser user = userService.loadUserByUsername(username);
 		model.addAttribute("user", user);
 		return "show-user-image";
 	}

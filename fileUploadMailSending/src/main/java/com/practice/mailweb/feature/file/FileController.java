@@ -5,7 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
@@ -29,6 +31,8 @@ import com.practice.mailweb.settings.filesettings.ImageSettings;
 
 @Controller
 public class FileController {
+	
+	public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir")+"/uploads/";
 	
 	@Autowired
 	UserService userService;
@@ -61,8 +65,15 @@ public class FileController {
 	@PostMapping("/api/user/setimage")
 	public String setUserImage(Model model, @RequestParam("username") String username, @RequestParam("image") MultipartFile file) throws IOException {
 		
-		Optional<AppUser> optionalUser = userService.loadUserByUsername(username);
-		AppUser user = optionalUser.orElseThrow();
+		Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, file.getOriginalFilename());
+		try {
+			Files.write(fileNameAndPath, resizeImage(file));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		AppUser user = userService.loadUserByUsername(username);
 		model.addAttribute("user", user);
 		
 		if(file.isEmpty()) {
@@ -76,7 +87,7 @@ public class FileController {
 			model.addAttribute("msg", "Max image size is " + maxUploadSizeInKb/1024 + " kb!");
 			return "show-user-image";
 		}
-		
+		user.setImagePath(UPLOAD_DIRECTORY+file.getOriginalFilename());
 		userService.setUserImage(username, resizeImage(file));
 		return "show-user-image";
 	}
@@ -90,14 +101,13 @@ public class FileController {
 	
 	@GetMapping("/api/user/getimagepage/{username}")
 	public String getUserImagePage(Model model, @PathVariable("username") String username){
-		Optional<AppUser> optionalUser = userService.loadUserByUsername(username);
-		AppUser user = optionalUser.orElseThrow();
+		AppUser user = userService.loadUserByUsername(username);
 		model.addAttribute("user", user);
 		return "show-user-image";
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/api/user/getimage/{username}", produces = MediaType.IMAGE_PNG_VALUE)
-	public @ResponseBody byte[] getUserImage(@PathVariable("username") String username){
+	public @ResponseBody byte[] getUserImage(@PathVariable("username") String username) throws IOException{
 		return userService.loadUserImage(username);
 	}
 

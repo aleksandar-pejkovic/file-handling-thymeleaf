@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +29,10 @@ public class AppUser {
 	@Column(unique = true, nullable = false)
 	private String email;
 	private String password;
+	@JsonIgnore
 	@Lob
 	private byte[] image;
+	@JsonIgnore
+	private String imagePath;
 
 }
