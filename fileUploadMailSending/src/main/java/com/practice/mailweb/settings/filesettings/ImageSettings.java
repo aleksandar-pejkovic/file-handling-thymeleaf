@@ -2,7 +2,7 @@ package com.practice.mailweb.settings.filesettings;
 
 public class ImageSettings {
 	
-	private static int maxUploadSizeInKb = 100 * 1024;
+	private static int maxUploadSizeInKb = 500 * 1024;
 	private static int imageHeight = 128;
 	
 	public static int getMaxLoadSizeInKb() {
